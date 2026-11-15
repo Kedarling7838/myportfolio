@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Kedarling Kanade Portfolio Console</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50%' y='62%' font-family='sans-serif' font-weight='800' font-size='48' fill='%2338bdf8' text-anchor='middle'>KK</text></svg>">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 & Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ==========================================================================
+       1. Login Overlay (Shown when unauthenticated)
+       ========================================================================== -->
+  <div id="loginScreen" class="admin-login-wrapper" style="display: none;">
+    <div class="admin-login-card">
+      <div class="text-center mb-4">
+        <div class="brand-logo-icon mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.25rem;">KK</div>
+        <h4 class="text-white fw-bold mb-1">Portfolio Console</h4>
+        <p class="text-muted small">Sign in to manage your portfolio content, resumes & media</p>
+      </div>
+
+      <!-- Auth Tab Switches -->
+      <ul class="nav nav-pills nav-fill mb-3 bg-dark p-1 rounded-3" id="authTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active py-2 text-white" id="tab-passcode-btn" data-bs-toggle="pill" data-bs-target="#tab-passcode" type="button" role="tab">Admin Passcode</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link py-2 text-white" id="tab-supabase-btn" data-bs-toggle="pill" data-bs-target="#tab-supabase" type="button" role="tab">Supabase Auth</button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="authTabsContent">
+        <!-- Passcode Login Form -->
+        <div class="tab-pane fade show active" id="tab-passcode" role="tabpanel">
+          <form id="passcodeLoginForm">
+            <div class="mb-3">
+              <label for="adminPasscode" class="form-label text-muted small">Administrator Passcode</label>
+              <input type="password" class="form-control-custom" id="adminPasscode" placeholder="Enter admin passcode (default: admin123)" required>
+              <div class="form-text text-muted small">Default passcode for local development is <code>admin123</code></div>
+            </div>
+            <button type="submit" class="btn btn-primary-custom w-100 justify-content-center py-2 mt-2">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Unlock Dashboard
+            </button>
+          </form>
+        </div>
+
+        <!-- Supabase Cloud Login Form -->
+        <div class="tab-pane fade" id="tab-supabase" role="tabpanel">
+          <form id="supabaseLoginForm">
+            <div class="mb-3">
+              <label for="supabaseEmail" class="form-label text-muted small">Supabase Admin Email</label>
+              <input type="email" class="form-control-custom" id="supabaseEmail" placeholder="e.g. kedarkanade9417@gmail.com">
+            </div>
+            <div class="mb-3">
+              <label for="supabasePassword" class="form-label text-muted small">Password</label>
+              <input type="password" class="form-control-custom" id="supabasePassword" placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary-custom w-100 justify-content-center py-2 mt-2">
+              <i class="bi bi-cloud-check me-1"></i> Sign In with Supabase
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+        <a href="index.html" class="text-secondary-custom small text-decoration-none">
+          <i class="bi bi-arrow-left me-1"></i> Return to Public Portfolio
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       2. Protected Admin Dashboard Interface
+       ========================================================================== -->
+  <div id="adminApp" class="admin-layout" style="display: none;">
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-header">
+        <span class="brand-logo-icon">KK</span>
+        <div>
+          <div class="fw-bold text-white fs-6">Kedarling Console</div>
+          <div class="text-muted small" style="font-size: 0.75rem;">v1.0.0 &bull; Cloudflare Ready</div>
+        </div>
+      </div>
+
+      <ul class="admin-nav">
+        <li class="admin-nav-item">
+          <a href="#overview" class="admin-nav-link active" data-module="overview">
+            <i class="bi bi-grid-1x2-fill"></i> <span>Dashboard Overview</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#profile" class="admin-nav-link" data-module="profile">
+            <i class="bi bi-person-lines-fill"></i> <span>Edit Profile</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#about" class="admin-nav-link" data-module="about">
+            <i class="bi bi-info-circle-fill"></i> <span>Manage About</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#education" class="admin-nav-link" data-module="education">
+            <i class="bi bi-mortarboard-fill"></i> <span>Manage Education</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#skills" class="admin-nav-link" data-module="skills">
+            <i class="bi bi-cpu-fill"></i> <span>Manage Skills</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#internships" class="admin-nav-link" data-module="internships">
+            <i class="bi bi-briefcase-fill"></i> <span>Manage Internships</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#projects" class="admin-nav-link" data-module="projects">
+            <i class="bi bi-code-slash"></i> <span>Manage Projects</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#achievements" class="admin-nav-link" data-module="achievements">
+            <i class="bi bi-trophy-fill"></i> <span>Manage Achievements</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#certifications" class="admin-nav-link" data-module="certifications">
+            <i class="bi bi-patch-check-fill"></i> <span>Manage Certifications</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#resumes" class="admin-nav-link" data-module="resumes">
+            <i class="bi bi-file-earmark-person-fill"></i> <span>Manage Resumes</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#photo" class="admin-nav-link" data-module="photo">
+            <i class="bi bi-image-fill"></i> <span>Profile Photograph</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#messages" class="admin-nav-link" data-module="messages">
+            <i class="bi bi-chat-left-dots-fill"></i> <span>Contact Inquiries</span>
+          </a>
+        </li>
+        <li class="admin-nav-item">
+          <a href="#settings" class="admin-nav-link" data-module="settings">
+            <i class="bi bi-gear-fill"></i> <span>Website Settings</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="p-3 border-top border-secondary border-opacity-25">
+        <a href="index.html" target="_blank" class="btn btn-sm btn-outline-glow w-100 mb-2">
+          <i class="bi bi-box-arrow-up-right me-1"></i> View Live Site
+        </a>
+        <button id="logoutBtn" class="btn btn-sm btn-danger w-100 opacity-75">
+          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-sm btn-secondary-custom d-lg-none" id="mobileSidebarToggle">
+            <i class="bi bi-list fs-5"></i>
+          </button>
+          <h5 class="text-white fw-bold mb-0" id="currentModuleTitle">Dashboard Overview</h5>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Backend Mode Badge -->
+          <div id="backendModeBadge" class="backend-status-pill local">
+            <span class="radar-dot" style="background: #f59e0b;"></span>
+            <span>Local Mode (IndexedDB)</span>
+          </div>
+
+          <!-- Quick Backup Button -->
+          <button class="btn btn-sm btn-secondary-custom" id="quickBackupBtn" title="Download Full JSON Backup">
+            <i class="bi bi-download me-1"></i> Backup
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Container -->
+      <div class="admin-content-container">
+
+        <!-- Local Mode Notification Banner -->
+        <div id="localWarningBanner" class="local-warning-banner">
+          <i class="bi bi-exclamation-triangle-fill fs-5 text-warning flex-shrink-0"></i>
+          <div class="flex-grow-1">
+            <strong>Local Development Mode Active:</strong> Edits and uploaded files (resumes, certs, images) are persisted in your browser's IndexedDB and localStorage. To sync across devices and cloud hosting, connect your free Supabase credentials in <a href="#settings" class="text-info fw-bold text-decoration-underline" onclick="switchModule('settings')">Website Settings</a>.
+          </div>
+        </div>
+
+        <!-- MODULE 1: Overview -->
+        <section id="mod-overview" class="admin-module">
+          <div class="row g-4 mb-4">
+            <div class="col-md-4 col-xl-2">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-primary bg-opacity-25 text-info"><i class="bi bi-code-slash"></i></div>
+                <div>
+                  <h3 class="fw-bold mb-0" id="statProjectsCount">0</h3>
+                  <div class="text-muted small">Projects</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-xl-2">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-info bg-opacity-25 text-cyan"><i class="bi bi-cpu"></i></div>
+                <div>
+                  <h3 class="fw-bold mb-0" id="statSkillsCount">0</h3>
+                  <div class="text-muted small">Skills</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-xl-2">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-success bg-opacity-25 text-success"><i class="bi bi-patch-check"></i></div>
+                <div>
+                  <h3 class="fw-bold mb-0" id="statCertsCount">0</h3>
+                  <div class="text-muted small">Certifications</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-xl-2">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-warning bg-opacity-25 text-warning"><i class="bi bi-trophy"></i></div>
+                <div>
+                  <h3 class="fw-bold mb-0" id="statAchievementsCount">0</h3>
+                  <div class="text-muted small">Achievements</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-xl-2">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-purple bg-opacity-25 text-purple"><i class="bi bi-file-earmark-person"></i></div>
+                <div>
+                  <h3 class="fw-bold mb-0" id="statResumesCount">0</h3>
+                  <div class="text-muted small">Resumes</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-xl-2">
+              <div class="admin-stat-card">
+                <div class="admin-stat-icon bg-danger bg-opacity-25 text-danger"><i class="bi bi-chat-dots"></i></div>
+                <div>
+                  <h3 class="fw-bold mb-0" id="statMessagesCount">0</h3>
+                  <div class="text-muted small">Inquiries</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-lg-7">
+              <div class="glass-card p-4">
+                <h5 class="text-white fw-bold mb-3"><i class="bi bi-lightning-charge text-info me-2"></i> Quick Portfolio Controls</h5>
+                <p class="text-secondary-custom small mb-4">Easily customize the primary sections of Kedarling Kanade's portfolio.</p>
+                <div class="d-flex flex-wrap gap-2">
+                  <button class="btn btn-secondary-custom" onclick="switchModule('projects')"><i class="bi bi-plus-circle me-1"></i> Add Project</button>
+                  <button class="btn btn-secondary-custom" onclick="switchModule('skills')"><i class="bi bi-plus-circle me-1"></i> Add Skill</button>
+                  <button class="btn btn-secondary-custom" onclick="switchModule('achievements')"><i class="bi bi-upload me-1"></i> Upload Achievement</button>
+                  <button class="btn btn-secondary-custom" onclick="switchModule('resumes')"><i class="bi bi-file-earmark-arrow-up me-1"></i> Update Resumes</button>
+                  <button class="btn btn-secondary-custom" onclick="switchModule('settings')"><i class="bi bi-cloud-upload me-1"></i> Supabase Setup</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="glass-card p-4">
+                <h5 class="text-white fw-bold mb-3"><i class="bi bi-hdd-network text-info me-2"></i> Deployment Architecture</h5>
+                <ul class="list-unstyled text-secondary-custom small mb-0">
+                  <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Static Frontend: HTML5, CSS3, ES6+ JS</li>
+                  <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Zero Node.js / React backend dependencies</li>
+                  <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Ready for 100% Free Cloudflare Pages deployment</li>
+                  <li class="mb-0"><i class="bi bi-check-circle-fill text-success me-2"></i> Free Tier Supabase cloud storage supported</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 2: Edit Profile -->
+        <section id="mod-profile" class="admin-module" style="display: none;">
+          <div class="glass-card p-4">
+            <h5 class="text-white fw-bold mb-4">Profile & Professional Headline</h5>
+            <form id="profileForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label text-muted small">Full Name *</label>
+                  <input type="text" class="form-control-custom" id="profName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted small">Availability Status *</label>
+                  <input type="text" class="form-control-custom" id="profAvailability" placeholder="e.g. Available for Opportunities" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label text-muted small">Headline *</label>
+                  <input type="text" class="form-control-custom" id="profHeadline" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label text-muted small">Rotating Roles (Comma-separated)</label>
+                  <input type="text" class="form-control-custom" id="profRoles">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label text-muted small">Email Address *</label>
+                  <input type="email" class="form-control-custom" id="profEmail" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label text-muted small">Phone Number *</label>
+                  <input type="text" class="form-control-custom" id="profPhone" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label text-muted small">Location *</label>
+                  <input type="text" class="form-control-custom" id="profLocation" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted small">GitHub URL</label>
+                  <input type="url" class="form-control-custom" id="profGithub">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted small">LinkedIn URL</label>
+                  <input type="url" class="form-control-custom" id="profLinkedin">
+                </div>
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Profile Details</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- MODULE 3: Manage About -->
+        <section id="mod-about" class="admin-module" style="display: none;">
+          <div class="glass-card p-4">
+            <h5 class="text-white fw-bold mb-4">About Me Introduction</h5>
+            <form id="aboutForm">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label text-muted small">Main Bio Description *</label>
+                  <textarea class="form-control-custom" id="aboutBioInput" rows="6" required></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted small">Career Interests</label>
+                  <input type="text" class="form-control-custom" id="aboutInterestsInput">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-muted small">Professional Goals</label>
+                  <input type="text" class="form-control-custom" id="aboutGoalsInput">
+                </div>
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save About Information</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- MODULE 4: Manage Education -->
+        <section id="mod-education" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Education Records</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openEducationModal()"><i class="bi bi-plus-lg me-1"></i> Add Education</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Degree / Qualification</th>
+                  <th>Institution</th>
+                  <th>Duration</th>
+                  <th>Score / Grade</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="educationTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 5: Manage Skills -->
+        <section id="mod-skills" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Technical Skills</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openSkillModal()"><i class="bi bi-plus-lg me-1"></i> Add Skill</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Skill Name</th>
+                  <th>Category</th>
+                  <th>Proficiency Level</th>
+                  <th>Icon</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="skillsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 6: Manage Internships -->
+        <section id="mod-internships" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Internships & Experience</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openInternshipModal()"><i class="bi bi-plus-lg me-1"></i> Add Internship</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Company</th>
+                  <th>Duration</th>
+                  <th>Certificate</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="internshipsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 7: Manage Projects -->
+        <section id="mod-projects" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Project Portfolio</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openProjectModal()"><i class="bi bi-plus-lg me-1"></i> Add New Project</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Preview</th>
+                  <th>Project Title</th>
+                  <th>Category</th>
+                  <th>Tech Stack</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="projectsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 8: Manage Achievements -->
+        <section id="mod-achievements" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Achievements & Photographs</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openAchievementModal()"><i class="bi bi-plus-lg me-1"></i> Add Achievement</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Photo</th>
+                  <th>Title</th>
+                  <th>Organization</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="achievementsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 9: Manage Certifications -->
+        <section id="mod-certifications" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Certificates & Licenses</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openCertModal()"><i class="bi bi-plus-lg me-1"></i> Add Certification</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Preview</th>
+                  <th>Certificate Name</th>
+                  <th>Issuer</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="certsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 10: Manage Resumes -->
+        <section id="mod-resumes" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Resume Download Center</h5>
+            <button class="btn btn-sm btn-primary-custom" onclick="openResumeUploadModal()"><i class="bi bi-file-earmark-plus me-1"></i> Add / Upload Resume Version</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Version</th>
+                  <th>Category</th>
+                  <th>Primary / Default</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="resumesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 11: Manage Profile Photograph -->
+        <section id="mod-photo" class="admin-module" style="display: none;">
+          <div class="glass-card p-4">
+            <h5 class="text-white fw-bold mb-4">Profile Photograph Management</h5>
+            <div class="row align-items-center">
+              <div class="col-md-4 text-center mb-4 mb-md-0">
+                <img src="assets/images/profile/kedarling_profile.jpg" alt="Profile" id="adminProfilePreview" class="img-fluid rounded-4 shadow border border-secondary border-opacity-25" style="max-height: 280px; object-fit: cover;">
+                <div class="text-muted small mt-2">Current Active Portrait</div>
+              </div>
+              <div class="col-md-8">
+                <div class="dropzone-container" id="profileDropzone">
+                  <i class="bi bi-cloud-arrow-up fs-1 text-info mb-2 d-block"></i>
+                  <h6 class="text-white fw-bold">Drag and drop a new profile photograph here</h6>
+                  <p class="text-muted small">Supports JPG, PNG, WEBP (Max 10MB). High resolution recommended.</p>
+                  <input type="file" id="profileFileInput" class="d-none" accept="image/jpeg,image/png,image/webp">
+                  <button type="button" class="btn btn-sm btn-outline-glow mt-2" onclick="document.getElementById('profileFileInput').click()">
+                    Browse Files
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 12: Contact Inquiries -->
+        <section id="mod-messages" class="admin-module" style="display: none;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold mb-0">Visitor Messages & Inquiries</h5>
+            <button class="btn btn-sm btn-secondary-custom" onclick="clearAllMessages()"><i class="bi bi-trash me-1"></i> Clear Inquiries</button>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Email</th>
+                  <th>Subject</th>
+                  <th>Message</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="messagesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 13: Website Settings & Supabase -->
+        <section id="mod-settings" class="admin-module" style="display: none;">
+          <div class="row g-4">
+            <!-- Supabase Configuration -->
+            <div class="col-lg-7">
+              <div class="glass-card p-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h5 class="text-white fw-bold mb-0"><i class="bi bi-cloud-fill text-info me-2"></i> Supabase Cloud Backend</h5>
+                  <span class="badge bg-success-subtle text-success border border-success border-opacity-25 px-2 py-1">Free Tier Compatible</span>
+                </div>
+                <p class="text-secondary-custom small mb-4">
+                  Connect your personal free-tier Supabase project for persistent cloud storage across multiple devices and Cloudflare Pages deployments.
+                </p>
+
+                <form id="supabaseConfigForm">
+                  <div class="mb-3">
+                    <label class="form-label text-muted small">Supabase Project URL</label>
+                    <input type="url" class="form-control-custom" id="sbUrl" placeholder="https://xyzcompany.supabase.co">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label text-muted small">Supabase Public Anon Key</label>
+                    <input type="password" class="form-control-custom" id="sbAnonKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                    <div class="form-text text-muted small">Use the safe public anon key. Never paste the secret service-role key.</div>
+                  </div>
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="sbEnabled">
+                    <label class="form-check-label text-white small" for="sbEnabled">Enable Supabase Cloud Sync</label>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Supabase Settings</button>
+                    <button type="button" class="btn btn-secondary-custom" id="testSupabaseBtn"><i class="bi bi-check-circle me-1"></i> Test Connection</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Admin Passcode & Data Backup -->
+            <div class="col-lg-5">
+              <div class="glass-card p-4 mb-4">
+                <h5 class="text-white fw-bold mb-3"><i class="bi bi-key-fill text-warning me-2"></i> Admin Passcode</h5>
+                <form id="passcodeUpdateForm">
+                  <div class="mb-3">
+                    <label class="form-label text-muted small">New Administrator Passcode</label>
+                    <input type="password" class="form-control-custom" id="newAdminPasscode" placeholder="Enter new passcode" required>
+                  </div>
+                  <button type="submit" class="btn btn-secondary-custom w-100"><i class="bi bi-shield-check me-1"></i> Update Passcode</button>
+                </form>
+              </div>
+
+              <div class="glass-card p-4">
+                <h5 class="text-white fw-bold mb-3"><i class="bi bi-database me-2 text-info"></i> Backup & Reset</h5>
+                <p class="text-muted small">Export all portfolio content as a single JSON file or reset to default state.</p>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-secondary-custom" onclick="window.portfolioStorage.exportBackup()"><i class="bi bi-download me-1"></i> Export Full JSON Backup</button>
+                  <label class="btn btn-outline-glow cursor-pointer mb-0">
+                    <i class="bi bi-upload me-1"></i> Import Backup JSON
+                    <input type="file" id="importBackupInput" class="d-none" accept=".json">
+                  </label>
+                  <button class="btn btn-outline-danger btn-sm mt-2" onclick="confirmResetDefaults()"><i class="bi bi-arrow-counterclockwise me-1"></i> Reset to Initial Defaults</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       CRUD Modals for Admin Editing
+       ========================================================================== -->
+
+  <!-- Generic Skill Modal -->
+  <div class="modal fade" id="skillEditModal" tabindex="-1" aria-labelledby="skillModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <form id="skillModalForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="skillModalTitle">Add Technical Skill</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="skillModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="mb-3">
+            <label class="form-label text-muted small">Skill Name *</label>
+            <input type="text" class="form-control-custom" id="skillModalName" placeholder="e.g. FastAPI" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Category *</label>
+            <select class="form-control-custom" id="skillModalCategory" required>
+              <option value="Programming">Programming</option>
+              <option value="Frontend">Frontend</option>
+              <option value="Backend">Backend</option>
+              <option value="AI & Machine Learning">AI & Machine Learning</option>
+              <option value="Generative AI">Generative AI</option>
+              <option value="Cloud">Cloud</option>
+              <option value="DevOps">DevOps</option>
+              <option value="Monitoring">Monitoring</option>
+              <option value="Database">Database</option>
+              <option value="Tools">Tools</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Proficiency Level</label>
+            <select class="form-control-custom" id="skillModalLevel">
+              <option value="Expert">Expert</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Proficient">Proficient</option>
+              <option value="Hands-on">Hands-on</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Bootstrap Icon Class</label>
+            <input type="text" class="form-control-custom" id="skillModalIcon" placeholder="e.g. bi-cpu">
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Education Edit Modal -->
+  <div class="modal fade" id="educationEditModal" tabindex="-1" aria-labelledby="eduModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <form id="educationModalForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="eduModalTitle">Education Record</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="eduModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="row g-3">
+            <div class="col-md-7">
+              <label class="form-label text-muted small">Degree / Qualification *</label>
+              <input type="text" class="form-control-custom" id="eduModalDegree" placeholder="e.g. Master of Computer Applications (MCA)" required>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label text-muted small">Score / Grade *</label>
+              <input type="text" class="form-control-custom" id="eduModalScore" placeholder="e.g. CGPA: 8.6" required>
+            </div>
+            <div class="col-md-7">
+              <label class="form-label text-muted small">Institution Name *</label>
+              <input type="text" class="form-control-custom" id="eduModalInstitution" placeholder="e.g. GM University" required>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label text-muted small">Location *</label>
+              <input type="text" class="form-control-custom" id="eduModalLocation" placeholder="e.g. Davanagere, Karnataka" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Duration / Batch *</label>
+              <input type="text" class="form-control-custom" id="eduModalDuration" placeholder="e.g. 2024 – 2026" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Description / Highlights</label>
+              <textarea class="form-control-custom" id="eduModalDescription" rows="3" placeholder="Key courses, specializations, academic awards..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Education</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Internship Edit Modal -->
+  <div class="modal fade" id="internshipEditModal" tabindex="-1" aria-labelledby="internModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <form id="internshipModalForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="internModalTitle">Internship / Experience</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="internModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Role Title *</label>
+              <input type="text" class="form-control-custom" id="internModalRole" placeholder="e.g. Machine Learning Intern" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Company Name *</label>
+              <input type="text" class="form-control-custom" id="internModalCompany" placeholder="e.g. Suven Consultants Pvt. Ltd." required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Duration *</label>
+              <input type="text" class="form-control-custom" id="internModalDuration" placeholder="e.g. March 2026 – May 2026" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Work Mode</label>
+              <input type="text" class="form-control-custom" id="internModalMode" placeholder="e.g. Remote" value="Remote">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Certificate Credential ID / Verification Code</label>
+              <input type="text" class="form-control-custom" id="internModalCode" placeholder="e.g. 7TAHHKML">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Key Responsibilities (One per line) *</label>
+              <textarea class="form-control-custom" id="internModalResponsibilities" rows="4" placeholder="Developed Machine Learning models using Python and Scikit-learn&#10;Worked on clustering analysis of Bitcoin transactions..." required></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Certificate Image</label>
+              <div class="dropzone-container" id="internshipDropzone">
+                <i class="bi bi-patch-check fs-2 text-info d-block mb-1"></i>
+                <span class="small text-white">Click or drag certificate image here</span>
+                <input type="file" id="internFileInput" class="d-none" accept="image/jpeg,image/png,image/webp">
+              </div>
+              <input type="hidden" id="internModalCertImage">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Internship</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Project Edit Modal -->
+  <div class="modal fade" id="projectEditModal" tabindex="-1" aria-labelledby="projectEditModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <form id="projectEditForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="projectEditModalTitle">Project Details</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="projModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label text-muted small">Project Title *</label>
+              <input type="text" class="form-control-custom" id="projModalTitle" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">Category *</label>
+              <select class="form-control-custom" id="projModalCategory" required>
+                <option value="Web Development">Web Development</option>
+                <option value="AI/ML">AI/ML</option>
+                <option value="Generative AI">Generative AI</option>
+                <option value="Python">Python</option>
+                <option value="Cloud">Cloud</option>
+                <option value="DevOps">DevOps</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Short Summary *</label>
+              <input type="text" class="form-control-custom" id="projModalSummary" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Full Description *</label>
+              <textarea class="form-control-custom" id="projModalDescription" rows="4" required></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Key Features (One per line)</label>
+              <textarea class="form-control-custom" id="projModalFeatures" rows="3" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Technology Tags (Comma-separated)</label>
+              <input type="text" class="form-control-custom" id="projModalTags" placeholder="e.g. Python, AWS, Docker">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">GitHub Repository URL</label>
+              <input type="url" class="form-control-custom" id="projModalGithub">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Live Demo URL</label>
+              <input type="url" class="form-control-custom" id="projModalDemo">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Project Screenshot / Graphic</label>
+              <div class="dropzone-container" id="projectDropzone">
+                <i class="bi bi-image fs-2 text-info d-block mb-1"></i>
+                <span class="small text-white">Click or drag image file here</span>
+                <input type="file" id="projFileInput" class="d-none" accept="image/jpeg,image/png,image/webp">
+              </div>
+              <input type="hidden" id="projModalImage">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Achievement Edit Modal -->
+  <div class="modal fade" id="achievementEditModal" tabindex="-1" aria-labelledby="achModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <form id="achievementModalForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="achModalTitle">Add Achievement Photograph</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="achModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label text-muted small">Title *</label>
+              <input type="text" class="form-control-custom" id="achModalName" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">Category</label>
+              <input type="text" class="form-control-custom" id="achModalCategory" placeholder="e.g. Award & Trophies">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Organization / Institution *</label>
+              <input type="text" class="form-control-custom" id="achModalOrg" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Date / Event Session</label>
+              <input type="text" class="form-control-custom" id="achModalDate">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Detailed Description *</label>
+              <textarea class="form-control-custom" id="achModalDesc" rows="3" required></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Achievement Photograph *</label>
+              <div class="dropzone-container" id="achievementDropzone">
+                <i class="bi bi-image fs-2 text-info d-block mb-1"></i>
+                <span class="small text-white">Click or drag photograph here</span>
+                <input type="file" id="achFileInput" class="d-none" accept="image/jpeg,image/png,image/webp">
+              </div>
+              <input type="hidden" id="achModalImage">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Achievement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Certification Edit Modal -->
+  <div class="modal fade" id="certEditModal" tabindex="-1" aria-labelledby="certEditModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <form id="certEditForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="certEditModalTitle">Certification Details</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="certModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label text-muted small">Certificate Name *</label>
+              <input type="text" class="form-control-custom" id="certModalTitleInput" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">Issuer / Academy *</label>
+              <input type="text" class="form-control-custom" id="certModalIssuer" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Date Issued</label>
+              <input type="text" class="form-control-custom" id="certModalDate">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Credential ID / Verification Code</label>
+              <input type="text" class="form-control-custom" id="certModalCredId">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Associated Skills (Comma-separated)</label>
+              <input type="text" class="form-control-custom" id="certModalSkills">
+            </div>
+            <div class="col-12">
+              <label class="form-label text-muted small">Certificate Preview Image / PDF</label>
+              <div class="dropzone-container" id="certDropzone">
+                <i class="bi bi-file-earmark-arrow-up fs-2 text-info d-block mb-1"></i>
+                <span class="small text-white">Click or drag certificate image/PDF here</span>
+                <input type="file" id="certFileInput" class="d-none" accept="image/jpeg,image/png,image/webp,application/pdf">
+              </div>
+              <input type="hidden" id="certModalImage">
+              <input type="hidden" id="certModalPdf">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Certificate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resume Upload Modal -->
+  <div class="modal fade" id="resumeEditModal" tabindex="-1" aria-labelledby="resumeEditModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <form id="resumeEditForm" class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom flex-shrink-0">
+          <h5 class="modal-title text-white fw-bold" id="resumeEditModalTitle">Manage Resume Version</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <input type="hidden" id="resumeModalId">
+        <div class="modal-body modal-body-custom modal-body-scrollable" style="overflow-y: auto; max-height: calc(85vh - 140px);">
+          <div class="mb-3">
+            <label class="form-label text-muted small">Resume Title *</label>
+            <input type="text" class="form-control-custom" id="resumeModalTitleInput" placeholder="e.g. Python Full Stack Developer Resume" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Category *</label>
+            <input type="text" class="form-control-custom" id="resumeModalCategory" placeholder="e.g. Full Stack & Backend" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Version Tag</label>
+            <input type="text" class="form-control-custom" id="resumeModalVersion" placeholder="v2026.1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Description</label>
+            <textarea class="form-control-custom" id="resumeModalDesc" rows="3"></textarea>
+          </div>
+          <div class="mb-3 form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="resumeModalIsDefault">
+            <label class="form-check-label text-white small" for="resumeModalIsDefault">Set as Primary / Default Resume</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted small">Upload Updated PDF *</label>
+            <div class="dropzone-container" id="resumeDropzone">
+              <i class="bi bi-file-earmark-pdf fs-2 text-danger d-block mb-1"></i>
+              <span class="small text-white">Click or drag PDF resume file</span>
+              <input type="file" id="resumeFileInput" class="d-none" accept="application/pdf">
+            </div>
+            <input type="hidden" id="resumeModalPdfUrl">
+          </div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 flex-shrink-0">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom"><i class="bi bi-save me-1"></i> Save Resume</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Application Modules -->
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

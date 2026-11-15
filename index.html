@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Kedarling Kanade | Python Developer, AI/ML & DevOps Engineer</title>
+  <meta name="description" content="Official personal portfolio of Kedarling Kanade - Python Developer, AI & Machine Learning Specialist, and Cloud & DevOps Engineer. Discover projects, technical skills, certifications, and download tailored resumes.">
+  <meta name="keywords" content="Kedarling Kanade, Python Developer, Machine Learning Engineer, Cloud Engineer, DevOps, AWS, LangChain, LangGraph, Django, MCA, Portfolio">
+  <meta name="author" content="Kedarling Kanade">
+  
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kedarling Kanade | Portfolio">
+  <meta property="og:description" content="Python Developer | AI & Machine Learning | Cloud & DevOps Engineer">
+  <meta property="og:image" content="assets/images/profile/kedarling_profile.jpg">
+  
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50%' y='62%' font-family='sans-serif' font-weight='800' font-size='48' fill='%2338bdf8' text-anchor='middle'>KK</text></svg>">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 & Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Top Scroll Progress Indicator -->
+  <div id="scrollProgress"></div>
+
+  <!-- Interactive Subtle Cursor Glow -->
+  <div class="cursor-glow"></div>
+
+  <!-- Background Particle Network Canvas -->
+  <canvas id="particlesCanvas"></canvas>
+
+  <div class="content-wrapper">
+
+    <!-- ==========================================================================
+         Navigation Bar
+         ========================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container">
+        <a class="navbar-brand" href="#hero">
+          <span class="brand-logo-icon">KK</span>
+          <span>Kedarling Kanade</span>
+        </a>
+
+        <div class="d-flex align-items-center gap-2 order-lg-3">
+          <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark and Light mode" title="Toggle Theme">
+            <i class="bi bi-sun-fill text-warning" id="themeToggleIcon"></i>
+          </button>
+          <a href="admin.html" class="btn btn-sm btn-outline-glow d-none d-sm-inline-flex align-items-center gap-1" title="Protected Admin Console">
+            <i class="bi bi-shield-lock"></i> <span>Admin</span>
+          </a>
+          <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-2"></i>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-center order-lg-2" id="navbarNav">
+          <ul class="navbar-nav py-3 py-lg-0">
+            <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+            <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+            <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
+            <li class="nav-item"><a class="nav-link" href="#achievements">Achievements</a></li>
+            <li class="nav-item"><a class="nav-link" href="#certifications">Certs</a></li>
+            <li class="nav-item"><a class="nav-link" href="#resumes">Resumes</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ==========================================================================
+         Hero Section
+         ========================================================================== -->
+    <section id="hero" class="hero-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-7 text-center text-lg-start animate-fade-in-up is-visible">
+            <!-- Availability Badge -->
+            <div class="availability-badge" id="availabilityBadge">
+              <span class="radar-dot"></span>
+              <span>Available for Opportunities</span>
+            </div>
+
+            <h1 class="hero-title">
+              Hi, I'm <span class="text-gradient" id="heroName">Kedarling Kanade</span>
+            </h1>
+
+            <div class="fs-4 fw-semibold mb-3">
+              I am a <span class="typewriter-text" id="typewriterRole">Python Developer</span>
+            </div>
+
+            <p class="hero-intro" id="heroHeadline">
+              Python Developer | AI & Machine Learning | Cloud & DevOps Engineer
+            </p>
+
+            <div class="hero-buttons justify-content-center justify-content-lg-start">
+              <a href="#resumes" class="btn btn-primary-custom">
+                <i class="bi bi-file-earmark-arrow-down"></i> Download Resume
+              </a>
+              <a href="#projects" class="btn btn-secondary-custom">
+                <i class="bi bi-code-slash"></i> View Projects
+              </a>
+              <a href="#contact" class="btn btn-outline-glow">
+                <i class="bi bi-chat-text"></i> Contact Me
+              </a>
+            </div>
+
+            <div class="social-links justify-content-center justify-content-lg-start">
+              <span class="text-muted small me-2">Connect:</span>
+              <a href="https://github.com/Kedarling7838" target="_blank" rel="noopener noreferrer" class="social-btn profile-github-link" title="GitHub Profile">
+                <i class="bi bi-github"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/kedarling-kanade-7070b2232" target="_blank" rel="noopener noreferrer" class="social-btn profile-linkedin-link" title="LinkedIn Profile">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="mailto:kedarkanade9417@gmail.com" class="social-btn profile-email-link" title="Direct Email">
+                <i class="bi bi-envelope-at"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-5 mt-5 mt-lg-0 text-center animate-fade-in-up is-visible">
+            <div class="hero-image-container">
+              <div class="hero-avatar-glow"></div>
+              
+              <!-- Floating Metric 1: Top Right -->
+              <div class="floating-stat-badge badge-top">
+                <div class="stat-icon-pill bg-primary bg-opacity-25 text-info">
+                  <i class="bi bi-award-fill"></i>
+                </div>
+                <div class="text-start">
+                  <div class="fs-6 fw-bold text-white"><span id="counterPythonScore">100/100</span></div>
+                  <div class="small text-muted">Python Exam Score</div>
+                </div>
+              </div>
+
+              <!-- Main Portrait Card -->
+              <div class="hero-avatar-card">
+                <img src="assets/images/profile/kedarling_profile.jpg" alt="Kedarling Kanade" class="hero-avatar-img" id="heroAvatar" onerror="this.src='assets/images/profile/kedarling_profile.jpg'">
+              </div>
+
+              <!-- Floating Metric 2: Bottom Left -->
+              <div class="floating-stat-badge badge-bottom">
+                <div class="stat-icon-pill bg-success bg-opacity-25 text-success">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="text-start">
+                  <div class="fs-6 fw-bold text-white">9.19 SGPA | 8.6 CGPA</div>
+                  <div class="small text-muted">BCA & MCA Academic Track</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         About Me Section
+         ========================================================================== -->
+    <section id="about" class="bg-secondary-custom">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-person-badge"></i> Background</span>
+          <h2 class="section-title">About <span class="text-gradient">Me</span></h2>
+          <p class="section-subtitle">Dedicated software engineer passionate about transforming ideas into production-grade systems.</p>
+        </div>
+
+        <div class="glass-card about-card animate-fade-in-up">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-4 text-center">
+              <div class="position-relative d-inline-block">
+                <img src="assets/images/profile/kedarling_profile.jpg" alt="Kedarling Kanade" class="img-fluid rounded-4 shadow-lg border border-secondary border-opacity-25" id="aboutAvatar" style="max-height: 380px; object-fit: cover;">
+                <div class="position-absolute bottom-0 start-50 translate-middle-x mb-n3">
+                  <span class="badge bg-primary px-3 py-2 rounded-pill shadow">
+                    <i class="bi bi-code-square me-1"></i> Full-Stack & AI
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-8">
+              <p class="about-bio-text" id="aboutBioText">
+                I am an MCA graduate with a strong interest in Python development, Artificial Intelligence, Machine Learning, Cloud Computing and DevOps. I enjoy building practical software applications, intelligent automation solutions and cloud-based systems. Through academic projects, internships and independent development, I have gained hands-on experience with Python, web development, AI technologies, AWS and DevOps tools. I continuously explore new technologies and enjoy solving real-world technical problems.
+              </p>
+
+              <div class="row g-3" id="aboutHighlights">
+                <!-- Populated dynamically by main.js -->
+              </div>
+
+              <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <span class="text-muted small d-block">Career Interests:</span>
+                  <span class="fw-semibold text-info" id="aboutCareerInterests">Python, AI/ML, Cloud & DevOps</span>
+                </div>
+                <a href="#resumes" class="btn btn-primary-custom">
+                  <i class="bi bi-file-earmark-arrow-down me-1"></i> Get Full Resume
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Technical Skills Section
+         ========================================================================== -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-cpu"></i> Competencies</span>
+          <h2 class="section-title">Technical <span class="text-gradient">Skills</span></h2>
+          <p class="section-subtitle">Verified proficiencies categorized across programming, AI/ML, cloud, and modern DevOps tools.</p>
+        </div>
+
+        <div class="row g-4" id="skillsContainer">
+          <!-- Populated dynamically by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Experience / Internships Timeline Section
+         ========================================================================== -->
+    <section id="experience">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-briefcase"></i> Track Record</span>
+          <h2 class="section-title">Experience & <span class="text-gradient">Internships</span></h2>
+          <p class="section-subtitle">Hands-on engineering experience building Machine Learning models, cloud automations, and data pipelines.</p>
+        </div>
+
+        <div class="experience-timeline" id="internshipsTimeline">
+          <!-- Populated dynamically by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Projects Portfolio Section
+         ========================================================================== -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-code-slash"></i> Featured Work</span>
+          <h2 class="section-title">Featured <span class="text-gradient">Projects</span></h2>
+          <p class="section-subtitle">End-to-end architectures including full-stack platforms, autonomous AI agents, and AWS cloud pipelines.</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="portfolio-filters animate-fade-in-up">
+          <button class="filter-btn active" data-filter="All">All Projects</button>
+          <button class="filter-btn" data-filter="Python">Python</button>
+          <button class="filter-btn" data-filter="AI/ML">AI & ML</button>
+          <button class="filter-btn" data-filter="Generative AI">Generative AI</button>
+          <button class="filter-btn" data-filter="Web Development">Web Development</button>
+          <button class="filter-btn" data-filter="Cloud">Cloud</button>
+          <button class="filter-btn" data-filter="DevOps">DevOps</button>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="row g-4" id="projectsContainer">
+          <!-- Populated dynamically by projects.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Education Section
+         ========================================================================== -->
+    <section id="education">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-mortarboard"></i> Academic Journey</span>
+          <h2 class="section-title">Education <span class="text-gradient">Background</span></h2>
+          <p class="section-subtitle">Solid computer science foundations with academic excellence across BCA and MCA degrees.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center" id="educationContainer">
+          <!-- Populated dynamically by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Achievements Section (Photographs Gallery)
+         ========================================================================== -->
+    <section id="achievements">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-trophy"></i> Recognitions</span>
+          <h2 class="section-title">Honors & <span class="text-gradient">Achievements</span></h2>
+          <p class="section-subtitle">Moments of competitive distinction, university examination scores, and academic commemorations.</p>
+        </div>
+
+        <div class="row g-4" id="achievementsContainer">
+          <!-- Populated dynamically with actual uploaded photos by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Certifications Section
+         ========================================================================== -->
+    <section id="certifications">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-patch-check"></i> Credentials</span>
+          <h2 class="section-title">Certifications & <span class="text-gradient">Training</span></h2>
+          <p class="section-subtitle">Industry credentials across Cloud AI, Machine Learning, Power BI, and Software Engineering.</p>
+        </div>
+
+        <div class="row g-4" id="certificationsContainer">
+          <!-- Populated dynamically by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Resume Download Center Section
+         ========================================================================== -->
+    <section id="resumes">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-file-earmark-person"></i> Career Dossier</span>
+          <h2 class="section-title">Resume <span class="text-gradient">Download Center</span></h2>
+          <p class="section-subtitle">Tailored resume versions highlighting specific engineering specializations. Download in high-resolution PDF format.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center" id="resumesContainer">
+          <!-- Populated dynamically by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Contact Section
+         ========================================================================== -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-header animate-fade-in-up">
+          <span class="section-badge"><i class="bi bi-envelope"></i> Get In Touch</span>
+          <h2 class="section-title">Let's <span class="text-gradient">Connect</span></h2>
+          <p class="section-subtitle">Open for exciting opportunities in Python development, AI/ML engineering, and Cloud DevOps.</p>
+        </div>
+
+        <div class="row g-4">
+          <!-- Contact Info Cards -->
+          <div class="col-lg-5 animate-fade-in-up">
+            <div class="glass-card contact-info-card">
+              <h4 class="text-white fw-bold mb-4">Contact Information</h4>
+
+              <div class="contact-item">
+                <div class="contact-icon-box">
+                  <i class="bi bi-envelope-fill"></i>
+                </div>
+                <div>
+                  <div class="text-muted small">Email Address</div>
+                  <a href="mailto:kedarkanade9417@gmail.com" class="text-white fw-semibold text-decoration-none profile-email-link">kedarkanade9417@gmail.com</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon-box">
+                  <i class="bi bi-telephone-fill"></i>
+                </div>
+                <div>
+                  <div class="text-muted small">Phone Number</div>
+                  <a href="tel:+917619577838" class="text-white fw-semibold text-decoration-none profile-phone-link">+91 76195 77838</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon-box">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <div>
+                  <div class="text-muted small">Location</div>
+                  <span class="text-white fw-semibold profile-location-text">Chikodi, Belagavi, Karnataka</span>
+                </div>
+              </div>
+
+              <div class="mt-4 pt-4 border-top border-secondary border-opacity-25">
+                <div class="text-muted small mb-3">Professional Profiles</div>
+                <div class="d-flex gap-2">
+                  <a href="https://github.com/Kedarling7838" target="_blank" rel="noopener noreferrer" class="btn btn-secondary-custom profile-github-link">
+                    <i class="bi bi-github me-1"></i> GitHub
+                  </a>
+                  <a href="https://www.linkedin.com/in/kedarling-kanade-7070b2232" target="_blank" rel="noopener noreferrer" class="btn btn-secondary-custom profile-linkedin-link">
+                    <i class="bi bi-linkedin me-1"></i> LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <div class="col-lg-7 animate-fade-in-up">
+            <div class="glass-card contact-form-card">
+              <h4 class="text-white fw-bold mb-4">Send a Direct Message</h4>
+              <form id="contactForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="contactName" class="form-label text-muted small">Your Name *</label>
+                    <input type="text" class="form-control-custom" id="contactName" placeholder="e.g. Rahul Sharma" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="contactEmail" class="form-label text-muted small">Email Address *</label>
+                    <input type="email" class="form-control-custom" id="contactEmail" placeholder="e.g. rahul@example.com" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="contactSubject" class="form-label text-muted small">Subject *</label>
+                    <input type="text" class="form-control-custom" id="contactSubject" placeholder="e.g. Discussion regarding Python & AI Engineer Role" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="contactMessage" class="form-label text-muted small">Message *</label>
+                    <textarea class="form-control-custom" id="contactMessage" rows="5" placeholder="Share project details, inquiry, or meeting proposal..." required></textarea>
+                  </div>
+                  <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary-custom w-100 justify-content-center py-3">
+                      <i class="bi bi-send-fill me-1"></i> Send Message
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Footer
+         ========================================================================== -->
+    <footer class="footer-custom">
+      <div class="container text-center">
+        <a class="navbar-brand justify-content-center mb-2" href="#hero">
+          <span class="brand-logo-icon">KK</span>
+          <span>Kedarling Kanade</span>
+        </a>
+        <p class="text-secondary-custom small mb-4">
+          Python Developer | AI & Machine Learning | Cloud & DevOps Engineer
+        </p>
+
+        <div class="social-links justify-content-center mb-4">
+          <a href="https://github.com/Kedarling7838" target="_blank" rel="noopener noreferrer" class="social-btn profile-github-link" title="GitHub"><i class="bi bi-github"></i></a>
+          <a href="https://www.linkedin.com/in/kedarling-kanade-7070b2232" target="_blank" rel="noopener noreferrer" class="social-btn profile-linkedin-link" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="mailto:kedarkanade9417@gmail.com" class="social-btn profile-email-link" title="Email"><i class="bi bi-envelope"></i></a>
+        </div>
+
+        <div class="text-muted small">
+          &copy; <span id="copyrightYear">2026</span> Kedarling Kanade. All rights reserved. Crafted for high performance & Cloudflare Pages deployment.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Floating Back to Top Button -->
+    <button class="back-to-top-btn" id="backToTopBtn" aria-label="Back to top" title="Scroll to top">
+      <i class="bi bi-arrow-up"></i>
+    </button>
+
+  </div> <!-- End content-wrapper -->
+
+  <!-- ==========================================================================
+       Modals
+       ========================================================================== -->
+
+  <!-- 1. Project Detail / Architecture Modal -->
+  <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <div>
+            <span class="badge bg-primary-subtle text-info border border-info border-opacity-25 mb-1" id="projectModalCategory">Architecture</span>
+            <h5 class="modal-title text-white fw-bold" id="projectModalTitle">Project Architecture</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <img src="" alt="" class="img-fluid rounded-3 mb-4 w-100 border border-secondary border-opacity-25" id="projectModalImage" style="max-height: 320px; object-fit: cover;">
+          <h6 class="text-info fw-bold text-uppercase small mb-2"><i class="bi bi-file-text me-1"></i> Technical Overview</h6>
+          <p class="text-secondary-custom mb-4" id="projectModalDescription"></p>
+
+          <h6 class="text-info fw-bold text-uppercase small mb-2"><i class="bi bi-check-all me-1"></i> Key Architecture & Features</h6>
+          <ul class="list-unstyled mb-4" id="projectModalFeatures"></ul>
+
+          <h6 class="text-info fw-bold text-uppercase small mb-2"><i class="bi bi-stack me-1"></i> Technology Stack</h6>
+          <div class="d-flex flex-wrap gap-2 mb-4" id="projectModalTechBadges"></div>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Close</button>
+          <div class="d-flex gap-2">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary-custom" id="projectModalGithub">
+              <i class="bi bi-github me-1"></i> View Repository
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary-custom" id="projectModalDemo">
+              <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Certificate Preview Modal -->
+  <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title text-white fw-bold" id="certModalTitle">Certificate Verification</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom text-center p-2">
+          <img src="" alt="Certificate" class="img-fluid rounded-2 shadow" id="certModalImage" style="max-height: 80vh; object-fit: contain;">
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Close</button>
+          <a href="#" download class="btn btn-primary-custom" id="certModalDownload">
+            <i class="bi bi-download me-1"></i> Download Document
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Achievement Lightbox Modal -->
+  <div class="modal fade" id="lightboxModal" tabindex="-1" aria-labelledby="lightboxTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <div>
+            <h5 class="modal-title text-white fw-bold mb-0" id="lightboxTitle">Achievement Detail</h5>
+            <span class="text-info small" id="lightboxOrg"></span>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom text-center p-3">
+          <img src="" alt="Achievement Photograph" class="img-fluid rounded-3 shadow mb-3" id="lightboxImage" style="max-height: 75vh; object-fit: contain;">
+          <p class="text-secondary-custom mt-2 mb-0 px-md-4 text-start" id="lightboxDescription"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Resume PDF Preview Modal -->
+  <div class="modal fade" id="resumePreviewModal" tabindex="-1" aria-labelledby="resumeModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" style="height: 90vh;">
+      <div class="modal-content modal-content-custom h-100">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title text-white fw-bold" id="resumeModalTitle">Resume Preview</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom p-0 h-100" style="overflow: hidden;">
+          <iframe src="" id="resumeModalIframe" class="w-100 h-100 border-0" title="PDF Resume Viewer"></iframe>
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Close</button>
+          <a href="#" download class="btn btn-primary-custom" id="resumeModalDownload">
+            <i class="bi bi-download me-1"></i> Download PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Application Modules -->
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/projects.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

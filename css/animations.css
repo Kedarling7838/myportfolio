@@ -1,0 +1,116 @@
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES - KEDARLING KANADE PORTFOLIO
+   High-performance GPU-accelerated CSS animations
+   ========================================================================== */
+
+/* Radar Pulse for Availability Dot */
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Cursor Blink for Typewriter */
+@keyframes blinkCursor {
+  0%, 100% {
+    border-color: var(--accent-blue);
+  }
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Floating Orb / Stat Badges */
+@keyframes floatOrb {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* Glowing Border Shift */
+@keyframes borderGlowShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Soft Fade In Up */
+.animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card Hover Lift */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+}
+
+/* Shimmer Effect for Loading / Skeleton */
+@keyframes shimmerEffect {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmerEffect 1.5s infinite;
+}
+
+/* Glowing Text Animation */
+.glow-text {
+  text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+/* Respect User Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .floating-stat-badge {
+    animation: none !important;
+  }
+
+  .cursor-glow {
+    display: none !important;
+  }
+
+  #particlesCanvas {
+    display: none !important;
+  }
+}
